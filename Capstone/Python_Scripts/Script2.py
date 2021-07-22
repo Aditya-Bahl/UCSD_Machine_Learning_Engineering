@@ -9,8 +9,8 @@ import time
 import io
 
 from google.cloud import storage
-client = storage.Client.from_service_account_json(json_credentials_path='sunlit-inquiry-319400-e94abc7798aa.json')
-bucket = client.bucket('ucsdcapstone')
+client = storage.Client.from_service_account_json(json_credentials_path='yourfile.json')
+bucket = client.bucket('yourbucket1')
 
 blob = bucket.blob('news_data.csv')
 blob.download_to_filename('data.csv')
@@ -91,7 +91,7 @@ pd.set_option('display.max_columns', None)
 complete_df = pd.merge(final_df, hist, how='left', on=['Date', 'name'])
 
 # posting data to Google cloud
-bucket = client.get_bucket('ucsdcapstone_transformation')
+bucket = client.get_bucket('yourbucket2')
 object_name_in_gcs_bucket = bucket.blob('complete_df_'+ time.strftime('%Y%m%d')+'.csv')
 df = pd.DataFrame(data=complete_df).to_csv(encoding="UTF-8")
 object_name_in_gcs_bucket.upload_from_string(data=df)
