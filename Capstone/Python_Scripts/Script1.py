@@ -7,11 +7,11 @@ import requests
 import pandas as pd
 import pytz
 
-#Set the start and end date
+# Set the start and end date
 start_date = datetime.datetime.now(pytz.timezone('US/Pacific')).strftime('%Y-%m-%d')
 end_date = (datetime.datetime.now(pytz.timezone('US/Pacific')) + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
 
-# Opening JSON file
+# Opening JSON file - has all the stock tickers
 f = open("config.json", )
 
 # returns JSON object as
@@ -26,7 +26,7 @@ def get_stock_data(stockticker, startdate, enddate):
 
 # Get news headlines
 def get_news_data(stockticker, startdate, enddate):
-    url = f"https://finnhub.io/api/v1/company-news?symbol={stockticker}&from={startdate}&to={enddate}&token=c2mnsqqad3idu4aicnrg"
+    url = f"https://finnhub.io/api/v1/company-news?symbol={stockticker}&from={startdate}&to={enddate}&token=yourtoken"
     r = requests.get(url)
 
     response = r.json()
@@ -62,8 +62,8 @@ news_data = pd.concat(news_data_list)
 # upload CSV files to Google cloud
 
 from google.cloud import storage
-client = storage.Client.from_service_account_json(json_credentials_path='sunlit-inquiry-319400-e94abc7798aa.json')
-bucket = client.get_bucket('ucsdcapstone')
+client = storage.Client.from_service_account_json(json_credentials_path='yourfile.json')
+bucket = client.get_bucket('yourbucket1')
 object_name_in_gcs_bucket = bucket.blob('stock_data.csv')
 df = pd.DataFrame(data=stock_data).to_csv(encoding="UTF-8")
 object_name_in_gcs_bucket.upload_from_string(data=df)
