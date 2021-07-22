@@ -1,0 +1,17 @@
+# Dockerfile, Image, Container
+
+FROM python:3.9
+
+WORKDIR /app
+RUN mkdir /templates
+COPY Flask.py /app
+COPY flaskrequirements.txt /app
+COPY templates /app/templates
+COPY sunlit-inquiry-319400-e94abc7798aa.json /app
+
+RUN pip install -r flaskrequirements.txt
+
+EXPOSE 5000
+ENTRYPOINT [ "python" ]
+
+CMD ["Flask.py"]
