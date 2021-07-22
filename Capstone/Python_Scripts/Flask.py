@@ -2,11 +2,11 @@ from google.cloud import bigquery
 import json
 
 def query_stackoverflow(stock):
-    client = bigquery.Client.from_service_account_json(json_credentials_path='sunlit-inquiry-319400-e94abc7798aa.json')
+    client = bigquery.Client.from_service_account_json(json_credentials_path='yourfile.json')
     print(stock)
     query_job = client.query(
         """
-        SELECT * FROM `sunlit-inquiry-319400.ucsdcapstonedataset.StockData` WHERE name = '"""+stock+"""' LIMIT 1000
+        SELECT * FROM `yourfile.ucsdcapstonedataset.StockData` WHERE name = '"""+stock+"""' LIMIT 1000
         """
     )
 
@@ -18,12 +18,7 @@ def query_stackoverflow(stock):
         htmlmsg += "<tr><td>" + str(row[2]) + "</td><td>" + str(row[3]) + "</td><td>" + str(row[4]) + "</td><td>" + str(row[9]) + "</td><td>" + str(row[13]) + "</td><td>" + str(row[15])+ "</td></tr>"
     htmlmsg += "</table></body></html>"
 
-    #records = [dict(row) for row in results]
-    #json_obj = json.dumps(str(records))
     return htmlmsg
-
-    #for row in results:
-     #   print("{} : {} views".format(row.int64_field_0, row.Unnamed__0))
 
 
 from flask import Flask, render_template, request, jsonify
@@ -41,6 +36,3 @@ def get_info():
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0')
-
-#df = query_job.to_dataframe()
-#json_obj = df.to_json(orient='records')
